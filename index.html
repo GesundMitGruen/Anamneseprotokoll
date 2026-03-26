@@ -517,14 +517,62 @@
     margin-bottom:4px;
   }
 
+
+  .hero-content{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+  }
+  .hero-copy{
+    flex:1 1 auto;
+    min-width:0;
+  }
+  .hero-inline-logo{
+    width:92px;
+    max-width:92px;
+    height:auto;
+    flex:0 0 auto;
+    display:block;
+  }
+  .hero-brand{
+    display:none;
+  }
+  @media (max-width: 980px){
+    .hero-inline-logo{
+      width:84px;
+      max-width:84px;
+      margin-top:2px;
+    }
+  }
+  @media (max-width: 760px){
+    .toolbar-label{
+      width:auto !important;
+      white-space:nowrap;
+    }
+    .summary-switch{
+      display:inline-flex;
+      flex-wrap:nowrap;
+      white-space:nowrap;
+      gap:6px;
+    }
+    .summary-switch button{
+      flex:0 0 auto !important;
+      width:auto !important;
+      min-width:58px;
+    }
+  }
+
 </style>
 </head>
 <body>
 <div class="container">
   <section class="hero">
     <div class="hero-content">
+      <img class="hero-inline-logo" src="data:image/png;base64,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" alt="Dieter Grün Ernährungsberatung">
+      <div class="hero-copy">
       <h1>Dein digitales Anamneseprotokoll</h1>
       <p>Bitte fülle die folgenden Angaben möglichst vollständig aus. Deine Eingaben werden lokal im Browser auf dem jeweils verwendeten Gerät gespeichert, bis Du sie versendest oder bewusst zurücksetzt. Zwischenstände kannst Du oben speichern. Für PDF und E-Mail findest Du die weiteren Schritte gut sichtbar im Abschnitt „Export & Versand“.</p>
+      </div>
     </div>
     <div class="hero-brand">
       <img src="data:image/png;base64,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" alt="Dieter Grün Ernährungsberatung">
@@ -711,7 +759,7 @@
         <div class="section-accordion-body">
         <div class="grid">
           <div class="col-12"><label for="labs">Relevante Blutwerte / Befunde, falls bekannt</label><textarea id="labs" placeholder="z. B. HbA1c, Cholesterin, Triglyceride, Harnsäure, Vitamin D, Ferritin, TSH, Leberwerte"></textarea></div>
-          <div class="col-6"><label for="previousApproaches">Bisherige Ernährungsumstellungen / Diäten / Maßnahmen</label><textarea id="previousApproaches" placeholder="Was hast Du bereits ausprobiert?"></textarea></div>
+          <div class="col-6"><label for="previousApproaches">Bisherige Ernährungsumstellungen / Diäten / Maßnahmen <span class="required-star">*</span></label><textarea id="previousApproaches" placeholder="z. B. Kalorienzählen, Low Carb, WeightWatchers, Intervallfasten, Ernährungsberatung, nichts davon"></textarea></div>
           <div class="col-6"><label for="barriers">Was war bisher die größte Hürde?</label><textarea id="barriers" placeholder="z. B. Alltag, Motivation, Beschwerden, fehlende Struktur"></textarea></div>
           <div class="col-12"><label for="extraNotes">Sonstige Hinweise, die für die Beratung wichtig sein könnten</label><textarea id="extraNotes" placeholder="Hier ist Platz für alles, was oben noch nicht angesprochen wurde."></textarea></div>
         </div>
@@ -803,6 +851,39 @@ function escapeHtml(value=''){
     .replaceAll("'",'&#39;');
 }
 
+
+function updateExclusiveCheckboxGroup(groupId, noneValue){
+  const boxes = Array.from(document.querySelectorAll(`[data-check-group="${groupId}"]`));
+  if (!boxes.length) return;
+  const noneBox = boxes.find(b => b.value === noneValue);
+  const otherBoxes = boxes.filter(b => b.value !== noneValue);
+  const anyOtherChecked = otherBoxes.some(b => b.checked);
+
+  if (noneBox){
+    if (anyOtherChecked){
+      noneBox.checked = false;
+      noneBox.disabled = true;
+    } else {
+      noneBox.disabled = false;
+    }
+  }
+
+  if (noneBox && noneBox.checked){
+    otherBoxes.forEach(b => {
+      b.checked = false;
+      b.disabled = true;
+    });
+  } else {
+    otherBoxes.forEach(b => b.disabled = false);
+  }
+}
+
+function updateAllExclusiveGroups(){
+  updateExclusiveCheckboxGroup('diseaseChecks', 'Keine bekannten Vorerkrankungen');
+  updateExclusiveCheckboxGroup('symptomChecks', 'Keine relevanten Beschwerden');
+  updateExclusiveCheckboxGroup('familyHistoryChecks', 'Keine bekannt');
+}
+
 function collectCheckValues(groupId){
   return Array.from(document.querySelectorAll(`[data-check-group="${groupId}"]`))
     .filter(el => el.checked)
@@ -849,6 +930,10 @@ function showMessage(message, title='Bitte beachte'){
   if (overlay){
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
+    const okBtn = byId('messageOkBtn');
+    if (okBtn){
+      setTimeout(() => { try { okBtn.focus(); } catch(e) {} }, 0);
+    }
   }
 }
 
@@ -994,7 +1079,7 @@ function getSectionProgress(sectionId){
     'section-d': ['height','weight'],
     'section-e': ['mealCount','snacks','eatOut','dayPattern','drinks','likes','triggerFoods','appetite','eatingSpeed'],
     'section-f': ['sleepHours','stressLevel','activity','smoking','alcohol','shiftwork'],
-    'section-g': []
+    'section-g': ['previousApproaches']
   };
 
   const requiredFilled = (() => {
@@ -1021,7 +1106,6 @@ function getSectionProgress(sectionId){
       const otherOk = !goals.includes('Sonstiges') || isFieldFilled(byId('goalOtherText'));
       return goalsFilled && baseFilled && otherOk;
     }
-
     if (sectionId === 'section-c'){
       const diseaseOk = collectCheckValues('diseaseChecks').length > 0;
       const symptomOk = collectCheckValues('symptomChecks').length > 0;
@@ -1030,17 +1114,12 @@ function getSectionProgress(sectionId){
         .filter(id => isFieldFilled(byId(id))).length;
       return diseaseOk && symptomOk && familyOk && optionalCount >= 2;
     }
-
     if (sectionId === 'section-g'){
-      const optionalCount = ['labs','previousApproaches','barriers','extraNotes']
+      const baseRequired = isFieldFilled(byId('previousApproaches'));
+      const optionalCount = ['labs','barriers','extraNotes']
         .filter(id => isFieldFilled(byId(id))).length;
-      return optionalCount >= 2;
+      return baseRequired && optionalCount >= 1;
     }
-
-    if (sectionId === 'section-a' || sectionId === 'section-d' || sectionId === 'section-e' || sectionId === 'section-f'){
-      return total > 0 && filledCount === total;
-    }
-
     return total > 0 && filledCount === total;
   })();
 
@@ -1174,6 +1253,7 @@ function loadDraft(){
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return false;
     applyData(JSON.parse(raw));
+    updateAllExclusiveGroups();
     updateSectionStatuses();
     return true;
   }catch(err){
@@ -1194,6 +1274,7 @@ function resetAll(){
   renderChecks('diseaseChecks', diseaseOptions);
   renderChecks('symptomChecks', symptomOptions);
   renderChecks('familyHistoryChecks', familyHistoryOptions);
+  updateAllExclusiveGroups();
   byId('summaryPanel').classList.remove('show');
   updateSummaryToggleButtons();
   toggleGoalOther();
@@ -1402,6 +1483,7 @@ renderChecks('goalChecks', goalOptions);
 renderChecks('diseaseChecks', diseaseOptions);
 renderChecks('symptomChecks', symptomOptions);
 renderChecks('familyHistoryChecks', familyHistoryOptions);
+updateAllExclusiveGroups();
 fillScale('motivationScale');
 fillScale('changeScale');
 loadDraft();
@@ -1418,6 +1500,7 @@ document.querySelectorAll('input, textarea, select').forEach(el => {
 document.addEventListener('change', (event) => {
   if (event.target.matches('[data-check-group="goalChecks"]')) toggleGoalOther();
   if (event.target.id === 'phoneCode') togglePhoneOther();
+  if (event.target.matches('[data-check-group]')) updateAllExclusiveGroups();
   updateSectionStatuses();
 });
 ['height','weight','waist','hip','weight3m','weight6m','weight12m','goalWeight','postalCode'].forEach(id => {
@@ -1438,6 +1521,7 @@ bindAccordions();
 updateSummaryToggleButtons();
 toggleGoalOther();
 togglePhoneOther();
+updateAllExclusiveGroups();
 updateSectionStatuses();
 </script>
 
@@ -1446,7 +1530,7 @@ updateSectionStatuses();
     <h3 id="messageTitle">Bitte beachte</h3>
     <p id="messageText"></p>
     <div class="toolbar">
-      <button class="primary" id="messageOkBtn" type="button">OK</button>
+      <button class="primary" id="messageOkBtn" type="button" onclick="hideMessage()">OK</button>
     </div>
   </div>
 </div>
