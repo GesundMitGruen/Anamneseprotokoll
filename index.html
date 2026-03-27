@@ -354,7 +354,7 @@
   }
 
   .top-actions{align-items:center}
-  .top-actions .spacer{flex:1 1 auto}
+  .top-actions .spacer{flex:1 1 auto;min-width:8px}
   .toolbar-label{font-size:14px;font-weight:700;color:var(--brand-dark);padding:0 2px}
   .section-accordion{
     overflow:hidden;
@@ -385,11 +385,12 @@
   .section-accordion.collapsed .section-accordion-body{display:none}
   .section-accordion-header:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
   @media (max-width:760px){
-    .toolbar-label{width:100%;padding-top:4px}
+    .toolbar-label{width:auto;padding-top:0}
+    .top-actions{row-gap:8px}
     .top-actions > button{flex:1 1 100%}
-    .toolbar-progress{padding:10px}
-    .toolbar-progress-head{align-items:flex-start}
-    .toolbar-progress-track{gap:4px}
+    .toolbar-progress-inline{order:10;flex:1 1 100%;width:100%;max-width:none}
+    .toolbar-progress{padding:0}
+    .toolbar-progress-head{align-items:flex-start;flex-wrap:wrap}
   }
 
 
@@ -414,75 +415,67 @@
   }
   .toolbar-progress{
     margin-top:12px;
-    padding:10px 12px;
-    border:1px solid var(--line);
-    border-radius:14px;
-    background:rgba(255,255,255,0.72);
+    padding:0;
+    border:none;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+  }
+  .toolbar-progress-inline{
+    margin-top:0;
+    padding:0;
+    flex:0 1 235px;
+    width:235px;
+    min-width:190px;
+    max-width:235px;
   }
   .toolbar-progress-head{
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    flex-wrap:wrap;
+    justify-content:flex-start;
+    gap:8px;
   }
   .toolbar-progress-title{
-    font-size:14px;
+    font-size:12px;
     font-weight:700;
     color:var(--brand-dark);
   }
   .toolbar-progress-summary{
-    font-size:13px;
-    color:var(--muted);
-  }
-  .toolbar-progress-track{
-    display:grid;
-    grid-template-columns:repeat(7,minmax(0,1fr));
-    gap:6px;
-    margin-top:10px;
-  }
-  .toolbar-progress-segment{
-    min-height:10px;
-    border-radius:999px;
-    background:#d9e2e8;
-    transition:background-color .2s ease, transform .2s ease, box-shadow .2s ease;
-  }
-  .toolbar-progress-segment.is-open{
-    background:#d9e2e8;
-  }
-  .toolbar-progress-segment.is-partial{
-    background:#f2b94b;
-  }
-  .toolbar-progress-segment.is-complete{
-    background:#3ea76a;
-  }
-  .toolbar-progress-segment.is-optional{
-    background:#c9cfd6;
-  }
-  .toolbar-progress-legend{
+    position:absolute;
+    inset:0;
     display:flex;
     align-items:center;
-    gap:14px;
-    flex-wrap:wrap;
-    margin-top:10px;
-    font-size:12px;
-    color:var(--muted);
+    justify-content:center;
+    padding:0 8px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--brand-dark);
+    white-space:nowrap;
+    pointer-events:none;
   }
-  .toolbar-progress-legend-item{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
+  .toolbar-progress-summary.is-on-fill{
+    color:#fff;
+    text-shadow:0 1px 1px rgba(0,0,0,.18);
   }
-  .toolbar-progress-legend-dot{
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    display:inline-block;
+  .toolbar-progress-bar{
+    position:relative;
+    margin-top:6px;
+    height:18px;
+    border-radius:999px;
+    background:#d9e2e8;
+    overflow:hidden;
   }
-  .toolbar-progress-legend-dot.is-open{background:#d9e2e8;}
-  .toolbar-progress-legend-dot.is-partial{background:#f2b94b;}
-  .toolbar-progress-legend-dot.is-complete{background:#3ea76a;}
-  .toolbar-progress-legend-dot.is-optional{background:#c9cfd6;}
+  .toolbar-progress-fill{
+    display:block;
+    height:100%;
+    width:0%;
+    border-radius:999px;
+    background:#d96b6b;
+    transition:width .25s ease, background-color .25s ease;
+  }
+  .toolbar-progress-fill.is-open{background:#d96b6b;}
+  .toolbar-progress-fill.is-partial{background:#d9b35f;}
+  .toolbar-progress-fill.is-complete{background:#6bb882;}
 
 
   .section-status{
@@ -674,21 +667,18 @@
         <div class="toolbar top-actions">
           <button class="primary" id="saveBtnTop">Zwischenstand speichern</button>
           <button class="secondary" id="resetBtnTop">Alles zurücksetzen</button>
+          <div class="toolbar-progress toolbar-progress-inline" id="toolbarProgress" aria-live="polite">
+            <div class="toolbar-progress-head">
+              <span class="toolbar-progress-title">Geschätzter Fortschritt</span>
+            </div>
+            <div class="toolbar-progress-bar" aria-hidden="true">
+              <span class="toolbar-progress-fill is-open" id="toolbarProgressFill"></span>
+              <span class="toolbar-progress-summary" id="toolbarProgressSummary">0 %</span>
+            </div>
+          </div>
           <span class="spacer" aria-hidden="true"></span>
           <span class="toolbar-label">Zusammenfassung</span>
           <span class="summary-switch"><button class="secondary" id="showSummaryBtnTop">Ein</button><button class="secondary" id="hideSummaryBtnTop">Aus</button></span>
-        </div>
-        <div class="toolbar-progress" id="toolbarProgress" aria-live="polite">
-          <div class="toolbar-progress-head">
-            <span class="toolbar-progress-title">Formularstatus</span>
-            <span class="toolbar-progress-summary" id="toolbarProgressSummary">Noch keine Bereiche ausgefüllt</span>
-          </div>
-          <div class="toolbar-progress-track" id="toolbarProgressTrack" aria-hidden="true"></div>
-          <div class="toolbar-progress-legend">
-            <span class="toolbar-progress-legend-item"><span class="toolbar-progress-legend-dot is-complete" aria-hidden="true"></span>vollständig</span>
-            <span class="toolbar-progress-legend-item"><span class="toolbar-progress-legend-dot is-partial" aria-hidden="true"></span>teilweise</span>
-            <span class="toolbar-progress-legend-item"><span class="toolbar-progress-legend-dot is-open" aria-hidden="true"></span>noch offen</span>
-          </div>
         </div>
         <div class="status" id="status"></div>
         <div class="required-legend"><span class="required-star">*</span> Pflichtfeld</div>
@@ -1299,27 +1289,71 @@ function getSectionProgress(sectionId){
   return {status:'complete',label:'Vollständig ausgefüllt'};
 }
 
+function getProgressFieldScore(id){
+  if (id.endsWith('Checks')) return collectCheckValues(id).length > 0 ? 1 : 0;
+  return isFieldFilled(byId(id)) ? 1 : 0;
+}
+
+function getSectionCompletionScore(sectionId){
+  const config = {
+    'section-a': {weight:1, required:['fullName','email','birthDate','gender','job','street','postalCode','city'], optional:['phone','familyStatus','children']},
+    'section-b': {weight:1, required:['goalChecks','motivationScale','changeScale'], optional:['goalWeight','timeframe','success']},
+    'section-c': {weight:1, required:['diseaseChecks','symptomChecks','familyHistoryChecks'], optional:['otherDiseases','allergies','surgeries','medication','supplements','familyHistoryOther']},
+    'section-d': {weight:1, required:['height','weight'], optional:['waist','hip','weight3m','weight6m','weight12m','weightComment']},
+    'section-e': {weight:1, required:['mealCount','dayPattern','drinks'], optional:['snacks','eatOut','likes','triggerFoods','appetite','eatingSpeed']},
+    'section-f': {weight:1, required:['sleepHours','stressLevel','activityTypeChecks'], optional:['sleepQuality','activityFrequency','activityDuration','activity','workActivityLevel','workSchedule','workPattern','smoking','alcohol','shiftwork','stressEating']},
+    'section-g': {weight:0.5, required:[], optional:['labs','previousApproachChecks','previousApproaches','barriers','extraNotes'], optionalThreshold:2}
+  };
+
+  const sectionConfig = config[sectionId];
+  if (!sectionConfig) return {score:0, weight:1};
+
+  const requiredIds = sectionConfig.required || [];
+  const optionalIds = sectionConfig.optional || [];
+  const filledRequired = requiredIds.reduce((sum, id) => sum + getProgressFieldScore(id), 0);
+  const filledOptional = optionalIds.reduce((sum, id) => sum + getProgressFieldScore(id), 0);
+  const requiredRatio = requiredIds.length ? (filledRequired / requiredIds.length) : 1;
+
+  let optionalRatio = 0;
+  if (sectionId === 'section-g'){
+    const threshold = sectionConfig.optionalThreshold || Math.max(optionalIds.length, 1);
+    optionalRatio = Math.min(filledOptional / Math.max(threshold, 1), 1);
+    return {score: optionalRatio, weight: sectionConfig.weight};
+  }
+  if (optionalIds.length) optionalRatio = filledOptional / optionalIds.length;
+
+  const score = requiredIds.length
+    ? Math.min((requiredRatio * 0.8) + (optionalRatio * 0.2), 1)
+    : optionalRatio;
+
+  return {score, weight: sectionConfig.weight};
+}
+
+function getToolbarProgressState(percent){
+  if (percent >= 75) return 'complete';
+  if (percent >= 40) return 'partial';
+  return 'open';
+}
+
 function updateToolbarProgress(){
-  const sectionIds = ['section-a','section-b','section-c','section-d','section-e','section-f','section-g'];
-  const track = byId('toolbarProgressTrack');
+  const fill = byId('toolbarProgressFill');
   const summary = byId('toolbarProgressSummary');
   const container = byId('toolbarProgress');
-  if (!track || !summary || !container) return;
+  if (!fill || !summary || !container) return;
 
-  const states = sectionIds.map(sectionId => getSectionProgress(sectionId));
-  const counts = states.reduce((acc, state) => {
-    acc[state.status] = (acc[state.status] || 0) + 1;
-    return acc;
-  }, {open:0, partial:0, complete:0});
+  const sectionIds = ['section-a','section-b','section-c','section-d','section-e','section-f','section-g'];
+  const sectionScores = sectionIds.map(sectionId => getSectionCompletionScore(sectionId));
+  const totalWeight = sectionScores.reduce((sum, item) => sum + item.weight, 0) || 1;
+  const weightedScore = sectionScores.reduce((sum, item) => sum + (item.score * item.weight), 0);
+  const percent = Math.round((weightedScore / totalWeight) * 100);
+  const state = getToolbarProgressState(percent);
 
-  track.innerHTML = states.map((state, index) => `<span class="toolbar-progress-segment is-${state.status}" title="Bereich ${index + 1}: ${state.label}"></span>`).join('');
-
-  const summaryParts = [];
-  if (counts.complete) summaryParts.push(`${counts.complete} vollständig`);
-  if (counts.partial) summaryParts.push(`${counts.partial} teilweise`);
-  if (counts.open) summaryParts.push(`${counts.open} noch offen`);
-  summary.textContent = summaryParts.length ? summaryParts.join(' · ') : 'Noch keine Bereiche ausgefüllt';
-  container.setAttribute('aria-label', `Formularstatus: ${summary.textContent}`);
+  fill.style.width = `${percent}%`;
+  fill.classList.remove('is-open','is-partial','is-complete');
+  fill.classList.add(`is-${state}`);
+  summary.textContent = `${percent} %`;
+  summary.classList.toggle('is-on-fill', percent >= 55);
+  container.setAttribute('aria-label', `Geschätzter Fortschritt: ${percent} Prozent, Status ${state === 'complete' ? 'grün' : state === 'partial' ? 'gelb' : 'rot'}`);
 }
 
 function updateSectionStatuses(){
