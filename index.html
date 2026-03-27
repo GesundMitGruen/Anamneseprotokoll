@@ -385,12 +385,51 @@
   .section-accordion.collapsed .section-accordion-body{display:none}
   .section-accordion-header:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
   @media (max-width:760px){
-    .toolbar-label{width:auto;padding-top:0}
-    .top-actions{row-gap:8px}
-    .top-actions > button{flex:1 1 100%}
-    .toolbar-progress-inline{order:10;flex:1 1 100%;width:100%;max-width:none}
+    .action-toolbar{
+      backdrop-filter:none;
+      -webkit-backdrop-filter:none;
+      background:#f2f7f8;
+      padding:12px 10px;
+      overflow:visible;
+    }
+    .toolbar-label{width:100%;padding-top:0;text-align:center}
+    .top-actions{
+      row-gap:8px;
+      justify-content:center;
+      align-items:center;
+      min-width:0;
+    }
+    .top-actions > button{
+      flex:1 1 100%;
+      width:100%;
+      min-width:0;
+    }
+    .top-actions .spacer{display:none}
+    .toolbar-progress-inline{
+      order:10;
+      flex:0 1 240px;
+      width:min(100%,240px);
+      min-width:0;
+      max-width:240px;
+      margin:2px auto 0;
+    }
     .toolbar-progress{padding:0}
-    .toolbar-progress-head{align-items:flex-start;flex-wrap:wrap}
+    .toolbar-progress-head{
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .toolbar-progress-title{
+      width:100%;
+      text-align:center;
+    }
+    .toolbar-progress-bar{
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .summary-switch{
+      margin:0 auto;
+    }
   }
 
 
