@@ -42,6 +42,18 @@
   .hero-content{flex:1 1 auto;min-width:0}
   .hero h1{margin:0 0 10px 0;font-size:32px;line-height:1.1}
   .hero p{margin:0;color:rgba(255,255,255,.92);line-height:1.5;font-size:15px;max-width:940px}
+  .hero-intro{margin:0;max-width:940px}
+  .hero-process{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;
+    max-width:940px;margin:18px 0 16px 0;
+  }
+  .hero-step{
+    text-align:center;padding:10px 8px 0 8px;
+    border-top:1px solid rgba(255,255,255,.24);
+  }
+  .hero-step strong{display:block;font-size:15px;line-height:1.35;margin-bottom:4px}
+  .hero-step span{display:block;font-size:13px;line-height:1.45;color:rgba(255,255,255,.82)}
+  .hero-note{max-width:940px}
   .hero-brand img{width:160px;max-width:160px;height:auto;display:block;opacity:.98}
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;margin-top:18px;align-items:start}
   .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 22px rgba(36,61,71,0.05)}
@@ -129,6 +141,7 @@
   .summary-render p{margin:0 0 6px 0;line-height:1.42;font-size:13px}
   .app-copyright-note{margin-top:14px;font-size:10px;line-height:1.35;color:rgba(32,48,37,0.52);text-align:right;user-select:none}
   .inline-note{font-size:12px;color:var(--muted);line-height:1.45;margin-top:6px}
+  .label-min-2lines{min-height:40px}
   .conditional-box{display:none}
   .conditional-box.show{display:block}
   .summary-toggle-row{display:flex;gap:10px;flex-wrap:wrap}
@@ -328,6 +341,7 @@
   @media (max-width: 980px){
     .layout{grid-template-columns:1fr}
     .hero{flex-wrap:wrap}
+    .hero-process{grid-template-columns:1fr}
     .hero-brand{width:100%;display:flex;justify-content:center}
     .hero-brand img{width:140px;max-width:140px}
   }
@@ -335,6 +349,7 @@
     .col-8,.col-6,.col-4,.col-3{grid-column:span 12}
     .checkgrid{grid-template-columns:1fr}
     .hero h1{font-size:26px}
+    .hero-step{padding-top:8px}
     .card h2{font-size:24px}
   }
 
@@ -372,6 +387,9 @@
   @media (max-width:760px){
     .toolbar-label{width:100%;padding-top:4px}
     .top-actions > button{flex:1 1 100%}
+    .toolbar-progress{padding:10px}
+    .toolbar-progress-head{align-items:flex-start}
+    .toolbar-progress-track{gap:4px}
   }
 
 
@@ -394,6 +412,77 @@
     color:#fff;
     border-color:transparent;
   }
+  .toolbar-progress{
+    margin-top:12px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:rgba(255,255,255,0.72);
+  }
+  .toolbar-progress-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .toolbar-progress-title{
+    font-size:14px;
+    font-weight:700;
+    color:var(--brand-dark);
+  }
+  .toolbar-progress-summary{
+    font-size:13px;
+    color:var(--muted);
+  }
+  .toolbar-progress-track{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:6px;
+    margin-top:10px;
+  }
+  .toolbar-progress-segment{
+    min-height:10px;
+    border-radius:999px;
+    background:#d9e2e8;
+    transition:background-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .toolbar-progress-segment.is-open{
+    background:#d9e2e8;
+  }
+  .toolbar-progress-segment.is-partial{
+    background:#f2b94b;
+  }
+  .toolbar-progress-segment.is-complete{
+    background:#3ea76a;
+  }
+  .toolbar-progress-segment.is-optional{
+    background:#c9cfd6;
+  }
+  .toolbar-progress-legend{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:10px;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .toolbar-progress-legend-item{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .toolbar-progress-legend-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+  }
+  .toolbar-progress-legend-dot.is-open{background:#d9e2e8;}
+  .toolbar-progress-legend-dot.is-partial{background:#f2b94b;}
+  .toolbar-progress-legend-dot.is-complete{background:#3ea76a;}
+  .toolbar-progress-legend-dot.is-optional{background:#c9cfd6;}
 
 
   .section-status{
@@ -413,8 +502,10 @@
     flex:0 0 auto;
   }
   .section-status.is-open .section-status-dot{background:#d96b6b;}
+  #section-g-status.is-open .section-status-dot{background:#c9cfd6;}
   .section-status.is-partial .section-status-dot{background:#d9b35f;}
   .section-status.is-complete .section-status-dot{background:#6bb882;}
+  .section-status.is-optional .section-status-dot{background:#c9cfd6;}
   .section-accordion-header{
     width:100%;
     display:flex;
@@ -553,7 +644,22 @@
   <section class="hero">
     <div class="hero-content">
       <h1>Dein digitales Anamneseprotokoll</h1>
-      <p>Bitte fülle die folgenden Angaben möglichst vollständig aus. Deine Eingaben werden lokal im Browser auf dem jeweils verwendeten Gerät gespeichert, bis Du sie versendest oder bewusst zurücksetzt. Über die Schaltflächen unterhalb des Headers kannst Du Deinen Zwischenstand speichern oder die Zusammenfassung ein- und ausblenden. Wie Du die Angaben anschließend als PDF speichern und per E-Mail vorbereiten kannst, findest Du weiter unten im Abschnitt „Export & Versand“.</p>
+      <p class="hero-intro">Bitte fülle die folgenden Angaben möglichst vollständig aus und plane dafür etwa 10–15 Minuten ein. Deine Eingaben werden lokal im Browser auf dem jeweils verwendeten Gerät gespeichert, bis Du sie versendest oder bewusst zurücksetzt.</p>
+      <div class="hero-process" aria-label="Kurzanleitung zum Ausfüllen und Versenden">
+        <div class="hero-step">
+          <strong>1. Formular ausfüllen</strong>
+          <span>Bearbeite die Bereiche in Deinem Tempo und möglichst vollständig.</span>
+        </div>
+        <div class="hero-step">
+          <strong>2. Zusammenfassung als PDF speichern</strong>
+          <span>Nutze dazu am Ende den Abschnitt „Export &amp; Versand“.</span>
+        </div>
+        <div class="hero-step">
+          <strong>3. PDF per E-Mail zurücksenden</strong>
+          <span>Bitte hänge die gespeicherte Datei an die vorbereitete E-Mail an.</span>
+        </div>
+      </div>
+      <p class="hero-note">Über die Schaltflächen unterhalb des Headers kannst Du Deinen Zwischenstand speichern oder die Zusammenfassung ein- und ausblenden. Die finalen Schritte für PDF und E-Mail findest Du weiter unten im Abschnitt „Export &amp; Versand“.</p>
     </div>
     <div class="hero-brand">
       <img src="data:image/png;base64,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" alt="Dieter Grün Ernährungsberatung">
@@ -571,6 +677,18 @@
           <span class="spacer" aria-hidden="true"></span>
           <span class="toolbar-label">Zusammenfassung</span>
           <span class="summary-switch"><button class="secondary" id="showSummaryBtnTop">Ein</button><button class="secondary" id="hideSummaryBtnTop">Aus</button></span>
+        </div>
+        <div class="toolbar-progress" id="toolbarProgress" aria-live="polite">
+          <div class="toolbar-progress-head">
+            <span class="toolbar-progress-title">Formularstatus</span>
+            <span class="toolbar-progress-summary" id="toolbarProgressSummary">Noch keine Bereiche ausgefüllt</span>
+          </div>
+          <div class="toolbar-progress-track" id="toolbarProgressTrack" aria-hidden="true"></div>
+          <div class="toolbar-progress-legend">
+            <span class="toolbar-progress-legend-item"><span class="toolbar-progress-legend-dot is-complete" aria-hidden="true"></span>vollständig</span>
+            <span class="toolbar-progress-legend-item"><span class="toolbar-progress-legend-dot is-partial" aria-hidden="true"></span>teilweise</span>
+            <span class="toolbar-progress-legend-item"><span class="toolbar-progress-legend-dot is-open" aria-hidden="true"></span>noch offen</span>
+          </div>
         </div>
         <div class="status" id="status"></div>
         <div class="required-legend"><span class="required-star">*</span> Pflichtfeld</div>
@@ -631,7 +749,7 @@
           </div>
           <div class="col-6"><label for="goalWeight">Zielgewicht (kg) / Zielbereich</label><input id="goalWeight" inputmode="decimal" placeholder="z. B. 78 oder 78-80"></div>
           <div class="col-6"><label for="timeframe">Gewünschter Zeithorizont</label><input id="timeframe" placeholder="z. B. in 6 Monaten"></div>
-          <div class="col-12"><label for="success">Woran würdest Du merken, dass die Beratung erfolgreich ist? <span class="required-star">*</span></label><textarea id="success" placeholder="z. B. weniger Beschwerden, mehr Energie, bessere Blutwerte"></textarea></div>
+          <div class="col-12"><label for="success">Woran würdest Du merken, dass die Beratung erfolgreich ist?</label><textarea id="success" placeholder="Bitte in 1–2 Sätzen, z. B. weniger Beschwerden, mehr Energie oder bessere Blutwerte"></textarea></div>
           <div class="col-6"><label for="motivationScale">Motivation (1 = gering, 10 = sehr hoch) <span class="required-star">*</span></label><select id="motivationScale"></select></div>
           <div class="col-6"><label for="changeScale">Veränderungsbereitschaft (1 = gering, 10 = sehr hoch) <span class="required-star">*</span></label><select id="changeScale"></select></div>
         </div>
@@ -649,14 +767,14 @@
         <div class="section-accordion-body">
         <div class="grid">
           <div class="col-12"><label>Bekannte Vorerkrankungen / Diagnosen <span class="required-star">*</span></label><div class="checkgrid" id="diseaseChecks"></div></div>
-          <div class="col-12"><label for="otherDiseases">Sonstige Diagnosen / wichtige medizinische Hinweise</label><textarea id="otherDiseases" placeholder="Falls etwas oben nicht enthalten ist, bitte hier ergänzen."></textarea></div>
+          <div class="col-12"><label for="otherDiseases">Sonstige Diagnosen / wichtige medizinische Hinweise</label><textarea id="otherDiseases" placeholder="Bitte kurz ergänzen, falls oben wichtige Diagnosen oder Hinweise fehlen."></textarea></div>
           <div class="col-12"><label>Verdauungsbeschwerden / Symptome <span class="required-star">*</span></label><div class="checkgrid" id="symptomChecks"></div></div>
-          <div class="col-6"><label for="allergies">Allergien / Intoleranzen</label><textarea id="allergies" placeholder="Welche? ärztlich bestätigt oder vermutet?"></textarea></div>
-          <div class="col-6"><label for="surgeries">Relevante Operationen / Eingriffe</label><textarea id="surgeries" placeholder="z. B. Magen, Darm, Galle"></textarea></div>
-          <div class="col-6"><label for="medication">Regelmäßige Medikamente</label><textarea id="medication" placeholder="Wirkstoff / Name, falls bekannt"></textarea></div>
-          <div class="col-6"><label for="supplements">Nahrungsergänzungsmittel</label><textarea id="supplements" placeholder="Welche Präparate nimmst Du aktuell?"></textarea></div>
+          <div class="col-6"><label for="allergies">Allergien / Intoleranzen</label><textarea id="allergies" placeholder="Bitte kurz angeben: Welche? Ärztlich bestätigt oder vermutet?"></textarea></div>
+          <div class="col-6"><label for="surgeries">Relevante Operationen / Eingriffe</label><textarea id="surgeries" placeholder="Bitte kurz angeben, z. B. Magen, Darm, Galle oder ungefähr wann."></textarea></div>
+          <div class="col-6"><label for="medication">Regelmäßige Medikamente</label><textarea id="medication" placeholder="Bitte möglichst Name oder Wirkstoff und wofür, falls bekannt."></textarea></div>
+          <div class="col-6"><label for="supplements">Nahrungsergänzungsmittel</label><textarea id="supplements" placeholder="Bitte kurz angeben: Welche Präparate nimmst Du aktuell und wie oft?"></textarea></div>
           <div class="col-12"><label>Familiäre Vorbelastungen <span class="required-star">*</span></label><div class="checkgrid" id="familyHistoryChecks"></div></div>
-          <div class="col-12"><label for="familyHistoryOther">Sonstige familiäre Hinweise</label><textarea id="familyHistoryOther" placeholder="Falls oben etwas Wichtiges fehlt, bitte hier ergänzen."></textarea></div>
+          <div class="col-12"><label for="familyHistoryOther">Sonstige familiäre Hinweise</label><textarea id="familyHistoryOther" placeholder="Bitte kurz ergänzen, falls oben wichtige familiäre Hinweise fehlen."></textarea></div>
         </div>
       </div>
       </section>
@@ -664,7 +782,7 @@
       <section class="card form-section section-accordion collapsed" id="section-d">
         <button type="button" class="section-accordion-header" data-accordion-target="section-d">
           <span class="header-main">
-            <span class="title">Körperdaten und Gewichtsverlauf</span>
+            <span class="title">Körperdaten und Gewichtsentwicklung</span>
             <span class="section-status is-open" id="section-d-status"><span class="section-status-dot"></span><span class="section-status-text">Wichtige Informationen fehlen noch</span></span>
           </span>
           <span class="toggle" aria-hidden="true"></span>
@@ -678,7 +796,7 @@
           <div class="col-4"><label for="weight3m">Gewicht vor 3 Monaten (kg)</label><input id="weight3m" inputmode="decimal" placeholder="optional"></div>
           <div class="col-4"><label for="weight6m">Gewicht vor 6 Monaten (kg)</label><input id="weight6m" inputmode="decimal" placeholder="optional"></div>
           <div class="col-4"><label for="weight12m">Gewicht vor 12 Monaten (kg)</label><input id="weight12m" inputmode="decimal" placeholder="optional"></div>
-          <div class="col-12"><label for="weightComment">Weitere Hinweise zum Gewichtsverlauf</label><textarea id="weightComment" placeholder="z. B. schnelle Zu- oder Abnahme, starke Schwankungen"></textarea></div>
+          <div class="col-12"><label for="weightComment">Weitere Hinweise zur Gewichtsentwicklung</label><textarea id="weightComment" placeholder="Bitte in 1–2 Sätzen, z. B. schnelle Zu- oder Abnahme, starke Schwankungen oder mögliche Auslöser."></textarea></div>
         </div>
       </div>
       </section>
@@ -694,14 +812,14 @@
         <div class="section-accordion-body">
         <div class="grid">
           <div class="col-4"><label for="mealCount">Wie viele Mahlzeiten pro Tag? <span class="required-star">*</span></label><select id="mealCount"><option value="">Bitte wählen</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5 oder mehr</option></select></div>
-          <div class="col-4"><label for="snacks">Snacks zwischendurch <span class="required-star">*</span></label><select id="snacks"><option value="">Bitte wählen</option><option>selten</option><option>gelegentlich</option><option>häufig</option><option>täglich</option></select></div>
-          <div class="col-4"><label for="eatOut">Essen außer Haus <span class="required-star">*</span></label><select id="eatOut"><option value="">Bitte wählen</option><option>selten</option><option>1–2x pro Woche</option><option>mehrmals pro Woche</option><option>fast täglich</option></select></div>
-          <div class="col-6"><label for="dayPattern">Typischer Essalltag / Tagesablauf <span class="required-star">*</span></label><textarea id="dayPattern" placeholder="z. B. Frühstück auslassen, Mittag Kantine, abends große Mahlzeit"></textarea></div>
-          <div class="col-6"><label for="drinks">Hauptgetränke und ungefähre Trinkmenge pro Tag <span class="required-star">*</span></label><textarea id="drinks" placeholder="z. B. Wasser, Kaffee, Softdrinks, Alkohol"></textarea></div>
-          <div class="col-6"><label for="likes">Vorlieben /<br>Abneigungen <span class="required-star">*</span></label><textarea id="likes" placeholder="z. B. gerne herzhaft, wenig Fisch, keine Milchprodukte"></textarea></div>
-          <div class="col-6"><label for="triggerFoods">Lebensmittel, die Beschwerden auslösen<br>oder besonders problematisch sind <span class="required-star">*</span></label><textarea id="triggerFoods" placeholder="z. B. Hülsenfrüchte, Süßes, Weizenprodukte"></textarea></div>
-          <div class="col-6"><label for="appetite">Appetit / Hungergefühl <span class="required-star">*</span></label><select id="appetite"><option value="">Bitte wählen</option><option>normal</option><option>eher vermindert</option><option>eher gesteigert</option><option>stark schwankend</option></select></div>
-          <div class="col-6"><label for="eatingSpeed">Essgeschwindigkeit <span class="required-star">*</span></label><select id="eatingSpeed"><option value="">Bitte wählen</option><option>langsam</option><option>normal</option><option>schnell</option><option>sehr schnell</option></select></div>
+          <div class="col-4"><label for="snacks">Snacks zwischendurch</label><select id="snacks"><option value="">Bitte wählen</option><option>selten</option><option>gelegentlich</option><option>häufig</option><option>täglich</option></select></div>
+          <div class="col-4"><label for="eatOut">Essen außer Haus</label><select id="eatOut"><option value="">Bitte wählen</option><option>selten</option><option>1–2x pro Woche</option><option>mehrmals pro Woche</option><option>fast täglich</option></select></div>
+          <div class="col-6"><label for="dayPattern">Typischer Essalltag / Tagesablauf <span class="required-star">*</span></label><textarea id="dayPattern" placeholder="Bitte kurz beschreiben, z. B. Frühstück auslassen, Mittag Kantine, abends große Mahlzeit."></textarea></div>
+          <div class="col-6"><label for="drinks">Hauptgetränke und ungefähre Trinkmenge pro Tag <span class="required-star">*</span></label><textarea id="drinks" placeholder="Bitte kurz angeben: Was trinkst Du typischerweise und ungefähr wie viel pro Tag? Wenn es unterschiedliche Getränke sind, bitte getrennt aufführen."></textarea></div>
+          <div class="col-6"><label for="likes">Vorlieben /<br>Abneigungen</label><textarea id="likes" placeholder="Bitte kurz beschreiben, z. B. gerne herzhaft, wenig Fisch oder keine Milchprodukte."></textarea></div>
+          <div class="col-6"><label for="triggerFoods">Lebensmittel, die Beschwerden auslösen<br>oder besonders problematisch sind</label><textarea id="triggerFoods" placeholder="Bitte kurz beschreiben, falls vorhanden, z. B. Hülsenfrüchte, Süßes oder Weizenprodukte."></textarea></div>
+          <div class="col-6"><label for="appetite">Appetit / Hungergefühl</label><select id="appetite"><option value="">Bitte wählen</option><option>normal</option><option>eher vermindert</option><option>eher gesteigert</option><option>stark schwankend</option></select></div>
+          <div class="col-6"><label for="eatingSpeed">Essgeschwindigkeit</label><select id="eatingSpeed"><option value="">Bitte wählen</option><option>langsam</option><option>normal</option><option>schnell</option><option>sehr schnell</option></select></div>
         </div>
       </div>
       </section>
@@ -719,12 +837,17 @@
           <div class="col-4"><label for="sleepHours">Schlafdauer <span class="required-star">*</span></label><select id="sleepHours"><option value="">Bitte wählen</option><option>&lt; 5 Stunden</option><option>5–6 Stunden</option><option>6–7 Stunden</option><option>7–8 Stunden</option><option>&gt; 8 Stunden</option></select></div>
           <div class="col-4"><label for="sleepQuality">Schlafqualität</label><select id="sleepQuality"><option value="">Bitte wählen</option><option>gut</option><option>mittel</option><option>eher schlecht</option></select></div>
           <div class="col-4"><label for="stressLevel">Stressniveau <span class="required-star">*</span></label><select id="stressLevel"><option value="">Bitte wählen</option><option>niedrig</option><option>mittel</option><option>hoch</option><option>sehr hoch</option></select></div>
-          <div class="col-6"><label for="activity">Bewegung / Sport <span class="required-star">*</span></label><textarea id="activity" placeholder="Was, wie oft, wie lange?"></textarea></div>
-          <div class="col-6"><label for="workPattern">Arbeits- und Tagesstruktur</label><textarea id="workPattern" placeholder="z. B. Büro, Schicht, viel Sitzen, körperlich aktiv"></textarea></div>
-          <div class="col-4"><label for="smoking">Rauchen <span class="required-star">*</span></label><select id="smoking"><option value="">Bitte wählen</option><option>nein</option><option>gelegentlich</option><option>täglich</option><option>früher</option></select></div>
-          <div class="col-4"><label for="alcohol">Alkohol <span class="required-star">*</span></label><select id="alcohol"><option value="">Bitte wählen</option><option>nein</option><option>selten</option><option>gelegentlich</option><option>regelmäßig</option></select></div>
-          <div class="col-4"><label for="shiftwork">Schichtarbeit <span class="required-star">*</span></label><select id="shiftwork"><option value="">Bitte wählen</option><option>nein</option><option>ja</option><option>unregelmäßige Arbeitszeiten</option></select></div>
-          <div class="col-12"><label for="stressEating">Einfluss von Stress, Emotionen oder Alltag auf das Essen</label><textarea id="stressEating" placeholder="z. B. Heißhunger, wenig Zeit, Frustessen, unregelmäßige Mahlzeiten"></textarea></div>
+          <div class="col-12"><label>Bewegungsarten / Sport <span class="required-star">*</span></label><div class="checkgrid" id="activityTypeChecks"></div><div class="inline-note">Mehrfachauswahl möglich. Ergänze unten gern Häufigkeit, Dauer oder Besonderheiten.</div></div>
+          <div class="col-3"><label for="activityFrequency">Wie oft pro Woche?</label><select id="activityFrequency"><option value="">Bitte wählen</option><option>selten / unregelmäßig</option><option>1x pro Woche</option><option>2–3x pro Woche</option><option>4–5x pro Woche</option><option>fast täglich</option></select></div>
+          <div class="col-3"><label for="activityDuration">Dauer pro Einheit</label><select id="activityDuration"><option value="">Bitte wählen</option><option>unter 20 Minuten</option><option>20–30 Minuten</option><option>30–45 Minuten</option><option>45–60 Minuten</option><option>über 60 Minuten</option></select></div>
+          <div class="col-6"><label for="activity">Ergänzungen zu Bewegung / Sport</label><textarea id="activity" placeholder="Bitte nur kurz ergänzen, falls oben noch etwas Wichtiges fehlt, z. B. Art, Intensität oder Beschwerden."></textarea></div>
+          <div class="col-3"><label for="workActivityLevel" class="label-min-2lines">Arbeitsalltag / körperliche Belastung</label><select id="workActivityLevel"><option value="">Bitte wählen</option><option>überwiegend sitzend</option><option>teils sitzend, teils aktiv</option><option>überwiegend stehend / gehend</option><option>körperlich anstrengend</option><option>derzeit nicht berufstätig</option></select></div>
+          <div class="col-3"><label for="workSchedule" class="label-min-2lines">Arbeitszeiten / Tagesstruktur</label><select id="workSchedule"><option value="">Bitte wählen</option><option>regelmäßige Tageszeiten</option><option>wechselnde Tageszeiten</option><option>Schichtarbeit</option><option>häufig unterwegs / wechselnde Orte</option><option>unregelmäßiger Alltag</option><option>derzeit nicht berufstätig</option></select></div>
+          <div class="col-6"><label for="workPattern">Ergänzungen zur Arbeits- und Tagesstruktur</label><textarea id="workPattern" placeholder="Bitte nur kurz ergänzen, falls oben noch etwas Wichtiges fehlt."></textarea></div>
+          <div class="col-4"><label for="smoking">Rauchen</label><select id="smoking"><option value="">Bitte wählen</option><option>nein</option><option>gelegentlich</option><option>täglich</option><option>früher</option></select></div>
+          <div class="col-4"><label for="alcohol">Alkohol</label><select id="alcohol"><option value="">Bitte wählen</option><option>nein</option><option>selten</option><option>gelegentlich</option><option>regelmäßig</option></select></div>
+          <div class="col-4"><label for="shiftwork">Schichtarbeit</label><select id="shiftwork"><option value="">Bitte wählen</option><option>nein</option><option>ja</option><option>unregelmäßige Arbeitszeiten</option></select></div>
+          <div class="col-12"><label for="stressEating">Einfluss von Stress, Emotionen oder Alltag auf das Essen</label><textarea id="stressEating" placeholder="Bitte in 1–2 Sätzen, z. B. Heißhunger, wenig Zeit, Frustessen oder unregelmäßige Mahlzeiten."></textarea></div>
         </div>
       </div>
       </section>
@@ -732,17 +855,18 @@
       <section class="card form-section section-accordion collapsed" id="section-g">
         <button type="button" class="section-accordion-header" data-accordion-target="section-g">
           <span class="header-main">
-            <span class="title">Relevante Werte und bisherige Maßnahmen</span>
-            <span class="section-status is-open" id="section-g-status"><span class="section-status-dot"></span><span class="section-status-text">Wichtige Informationen fehlen noch</span></span>
+            <span class="title">Bisherige Maßnahmen und wichtige Werte</span>
+            <span class="section-status is-open" id="section-g-status"><span class="section-status-dot"></span><span class="section-status-text">Offen - Versand möglich</span></span>
           </span>
           <span class="toggle" aria-hidden="true"></span>
         </button>
         <div class="section-accordion-body">
         <div class="grid">
-          <div class="col-12"><label for="labs">Relevante Blutwerte / Befunde, falls bekannt</label><textarea id="labs" placeholder="z. B. HbA1c, Cholesterin, Triglyceride, Harnsäure, Vitamin D, Ferritin, TSH, Leberwerte"></textarea></div>
-          <div class="col-6"><label for="previousApproaches">Bisherige Ernährungsumstellungen / Diäten / Maßnahmen <span class="required-star">*</span></label><textarea id="previousApproaches" placeholder="z. B. Kalorienzählen, Low Carb, WeightWatchers, Intervallfasten, Ernährungsberatung, nichts davon"></textarea></div>
-          <div class="col-6"><label for="barriers">Was war bisher die größte Hürde?</label><textarea id="barriers" placeholder="z. B. Alltag, Motivation, Beschwerden, fehlende Struktur"></textarea></div>
-          <div class="col-12"><label for="extraNotes">Sonstige Hinweise, die für die Beratung wichtig sein könnten</label><textarea id="extraNotes" placeholder="Hier ist Platz für alles, was oben noch nicht angesprochen wurde."></textarea></div>
+          <div class="col-12"><label for="labs">Wichtige Blutwerte / Befunde, falls bekannt</label><textarea id="labs" placeholder="Bitte bekannte Werte oder Befunde kurz eintragen, z. B. HbA1c, Cholesterin, Ferritin oder TSH."></textarea></div>
+          <div class="col-12"><label>Bisherige Ernährungsumstellungen / Diäten / Maßnahmen</label><div class="checkgrid" id="previousApproachChecks"></div><div class="inline-note">Mehrfachauswahl möglich.</div></div>
+          <div class="col-6"><label for="previousApproaches">Ergänzungen zu bisherigen Maßnahmen</label><textarea id="previousApproaches" placeholder="Bitte kurz ergänzen, falls etwas Wichtiges fehlt oder Du etwas genauer beschreiben möchtest."></textarea></div>
+          <div class="col-6"><label for="barriers">Was war bisher die größte Hürde?</label><textarea id="barriers" placeholder="Bitte in 1–2 Sätzen, z. B. Alltag, Motivation, Beschwerden oder fehlende Struktur."></textarea></div>
+          <div class="col-12"><label for="extraNotes">Sonstige Hinweise, die für die Beratung wichtig sein könnten</label><textarea id="extraNotes" placeholder="Bitte hier kurz ergänzen, was für die Beratung sonst noch wichtig sein könnte."></textarea></div>
         </div>
       </div>
       </section>
@@ -753,29 +877,18 @@
 
       <section class="card">
         <h2>Export & Versand</h2>
-        <div class="muted">Bitte gehe die folgenden Schritte nacheinander durch:</div>
-        <div class="footer-note" style="margin-top:8px;">
-          <strong>1. Zusammenfassung prüfen</strong><br>
-          Blende zuerst die Zusammenfassung im Hauptbereich ein und prüfe Deine Angaben.
-        </div>
-        <div class="footer-note" style="margin-top:10px;">
-          <strong>2. PDF speichern</strong><br>
-          Klicke auf <strong>„1. Drucken / PDF“</strong> und speichere die Zusammenfassung anschließend als PDF-Datei.
-        </div>
-        <div class="footer-note" style="margin-top:10px;">
-          <strong>3. E-Mail öffnen</strong><br>
-          Klicke danach auf <strong>„2. E-Mail öffnen“</strong>. Dein Mailprogramm wird mit einer vorbereiteten E-Mail an <strong>gesundmitgruen@gmail.com</strong> geöffnet.
-        </div>
-        <div class="footer-note" style="margin-top:10px;">
-          <strong>4. PDF anhängen und senden</strong><br>
-          Bitte hänge die zuvor gespeicherte PDF-Datei an die vorbereitete E-Mail an und sende sie danach ab.
-        </div>
         <div class="toolbar">
           <button class="secondary" id="printBtn">1. Drucken / PDF</button>
           <button class="warning" id="mailBtn">2. E-Mail öffnen</button>
         </div>
-        <div class="footer-note" style="margin-top:16px;">
-          <strong>Hinweis:</strong> Wenn sich kein Mailprogramm öffnet, kannst Du die gespeicherte PDF-Datei auch manuell über Deinen E-Mail-Anbieter versenden.
+        <div class="footer-note" style="margin-top:12px;">
+          <strong>Kurz zur Erinnerung:</strong> Bitte speichere zuerst die Zusammenfassung als PDF (Button 1. Drucken / PDF). Öffne danach die vorbereitete E-Mail (Button 2. E-Mail öffnen), hänge die PDF-Datei an und sende sie anschließend ab.
+        </div>
+        <div class="footer-note" style="margin-top:10px;">
+          <strong>Wichtig:</strong> Bitte hänge die zuvor gespeicherte PDF-Datei an die vorbereitete E-Mail an. Die Datei findest Du in der Regel im Download-Ordner Deines Geräts oder in Deinen zuletzt heruntergeladenen Dateien.
+        </div>
+        <div class="footer-note" style="margin-top:10px;">
+          <strong>Falls etwas nicht klappt:</strong> Wenn sich kein Mailprogramm öffnet oder das Anhängen nicht funktioniert, kannst Du die gespeicherte PDF-Datei auch manuell an <strong>gesundmitgruen@gmail.com</strong> senden oder mich kurz kontaktieren.
         </div>
       </section>
       <div class="app-copyright-note">© Dieter Grün Ernährungsberatung · Digitale Formularversion · Alle Rechte vorbehalten</div>
@@ -797,15 +910,24 @@ const goalOptions = [
 const diseaseOptions = [
   'Diabetes mellitus','Prädiabetes','Bluthochdruck','Erhöhte Blutfette','Schilddrüsenerkrankung','Reizdarm',
   'Chronisch-entzündliche Darmerkrankung','Zöliakie','Fettleber','Gicht / erhöhte Harnsäure','Nierenerkrankung',
-  'Herz-Kreislauf-Erkrankung','Adipositas','Migräne','PCOS','Keine bekannten Vorerkrankungen'
+  'Herz-Kreislauf-Erkrankung','Adipositas','Migräne','PCOS','Trifft nicht zu / nichts bekannt','Weiß ich nicht'
 ];
 const symptomOptions = [
   'Blähungen','Völlegefühl','Sodbrennen','Bauchschmerzen','Übelkeit','Durchfall',
-  'Verstopfung','Wechselnder Stuhlgang','Heißhunger','Müdigkeit nach dem Essen','Keine relevanten Beschwerden'
+  'Verstopfung','Wechselnder Stuhlgang','Heißhunger','Müdigkeit nach dem Essen','Trifft aktuell nicht zu','Weiß ich nicht'
 ];
 const familyHistoryOptions = [
   'Diabetes mellitus','Bluthochdruck','Erhöhte Blutfette','Herz-Kreislauf-Erkrankungen',
-  'Adipositas','Schilddrüsenerkrankungen','Gicht / erhöhte Harnsäure','Magen-Darm-Erkrankungen','Keine bekannt'
+  'Adipositas','Schilddrüsenerkrankungen','Gicht / erhöhte Harnsäure','Magen-Darm-Erkrankungen','Trifft nicht zu / nichts bekannt','Weiß ich nicht'
+];
+const activityTypeOptions = [
+  'Spazieren / Alltagsbewegung','Krafttraining','Ausdauertraining','Radfahren','Schwimmen',
+  'Gymnastik / Yoga / Pilates','Vereinssport','Körperlich aktive Arbeit','Derzeit keine regelmäßige Bewegung','Sonstiges'
+];
+const previousApproachOptions = [
+  'Trifft nicht zu / bisher nichts ausprobiert','Kalorien zählen / Ernährungstagebuch','Low Carb / Kohlenhydrate reduzieren',
+  'Intervallfasten','WeightWatchers / Gruppenprogramm','Ernährungsberatung / Coaching',
+  'Mahlzeitenersatz / Shakes','Mehr Bewegung / Sport','Sonstiges'
 ];
 
 function byId(id){ return document.getElementById(id); }
@@ -813,6 +935,7 @@ function setStatus(msg=''){ byId('status').textContent = msg; }
 
 function renderChecks(targetId, options){
   const target = byId(targetId);
+  if (!target) return;
   target.innerHTML = options.map((option) => `
     <label class="checkitem">
       <input type="checkbox" value="${escapeHtml(option)}" data-check-group="${targetId}" />
@@ -836,36 +959,57 @@ function escapeHtml(value=''){
 }
 
 
-function updateExclusiveCheckboxGroup(groupId, noneValue){
+function updateExclusiveCheckboxGroup(groupId, exclusiveValues = []){
   const boxes = Array.from(document.querySelectorAll(`[data-check-group="${groupId}"]`));
   if (!boxes.length) return;
-  const noneBox = boxes.find(b => b.value === noneValue);
-  const otherBoxes = boxes.filter(b => b.value !== noneValue);
-  const anyOtherChecked = otherBoxes.some(b => b.checked);
 
-  if (noneBox){
-    if (anyOtherChecked){
-      noneBox.checked = false;
-      noneBox.disabled = true;
-    } else {
-      noneBox.disabled = false;
-    }
+  const exclusiveSet = new Set(exclusiveValues || []);
+  const exclusiveBoxes = boxes.filter(b => exclusiveSet.has(b.value));
+  const normalBoxes = boxes.filter(b => !exclusiveSet.has(b.value));
+  const checkedExclusive = exclusiveBoxes.filter(b => b.checked);
+  const anyNormalChecked = normalBoxes.some(b => b.checked);
+
+  if (checkedExclusive.length > 1){
+    checkedExclusive.slice(1).forEach(box => {
+      box.checked = false;
+    });
   }
 
-  if (noneBox && noneBox.checked){
-    otherBoxes.forEach(b => {
-      b.checked = false;
-      b.disabled = true;
+  const activeExclusive = exclusiveBoxes.find(b => b.checked);
+
+  if (activeExclusive){
+    normalBoxes.forEach(box => {
+      box.checked = false;
+      box.disabled = true;
+    });
+    exclusiveBoxes.forEach(box => {
+      box.disabled = box !== activeExclusive;
+    });
+    return;
+  }
+
+  if (anyNormalChecked){
+    exclusiveBoxes.forEach(box => {
+      box.checked = false;
+      box.disabled = true;
     });
   } else {
-    otherBoxes.forEach(b => b.disabled = false);
+    exclusiveBoxes.forEach(box => {
+      box.disabled = false;
+    });
   }
+
+  normalBoxes.forEach(box => {
+    box.disabled = false;
+  });
 }
 
 function updateAllExclusiveGroups(){
-  updateExclusiveCheckboxGroup('diseaseChecks', 'Keine bekannten Vorerkrankungen');
-  updateExclusiveCheckboxGroup('symptomChecks', 'Keine relevanten Beschwerden');
-  updateExclusiveCheckboxGroup('familyHistoryChecks', 'Keine bekannt');
+  updateExclusiveCheckboxGroup('diseaseChecks', ['Trifft nicht zu / nichts bekannt','Weiß ich nicht']);
+  updateExclusiveCheckboxGroup('symptomChecks', ['Trifft aktuell nicht zu','Weiß ich nicht']);
+  updateExclusiveCheckboxGroup('familyHistoryChecks', ['Trifft nicht zu / nichts bekannt','Weiß ich nicht']);
+  updateExclusiveCheckboxGroup('activityTypeChecks', ['Derzeit keine regelmäßige Bewegung']);
+  updateExclusiveCheckboxGroup('previousApproachChecks', ['Trifft nicht zu / bisher nichts ausprobiert']);
 }
 
 function collectCheckValues(groupId){
@@ -874,8 +1018,24 @@ function collectCheckValues(groupId){
     .map(el => el.value);
 }
 
+function normalizeCheckValues(groupId, values){
+  const map = {
+    diseaseChecks: {
+      'Keine bekannten Vorerkrankungen': 'Trifft nicht zu / nichts bekannt'
+    },
+    symptomChecks: {
+      'Keine relevanten Beschwerden': 'Trifft aktuell nicht zu'
+    },
+    familyHistoryChecks: {
+      'Keine bekannt': 'Trifft nicht zu / nichts bekannt'
+    }
+  };
+  const groupMap = map[groupId] || {};
+  return (values || []).map(value => groupMap[value] || value);
+}
+
 function setCheckValues(groupId, values){
-  const wanted = new Set(values || []);
+  const wanted = new Set(normalizeCheckValues(groupId, values));
   document.querySelectorAll(`[data-check-group="${groupId}"]`).forEach(el => {
     el.checked = wanted.has(el.value);
   });
@@ -943,27 +1103,15 @@ function validateFormBasics(){
     ['street', 'Im Abschnitt „Persönliche Angaben“ fehlt noch Straße und Hausnummer.'],
     ['postalCode', 'Im Abschnitt „Persönliche Angaben“ fehlt noch die PLZ.'],
     ['city', 'Im Abschnitt „Persönliche Angaben“ fehlt noch der Wohnort.'],
-    ['success', 'Im Abschnitt „Beratungsanlass und Ziele“ fehlt noch die Angabe, woran Du den Erfolg der Beratung erkennen würdest.'],
     ['motivationScale', 'Im Abschnitt „Beratungsanlass und Ziele“ fehlt noch Deine Motivation.'],
     ['changeScale', 'Im Abschnitt „Beratungsanlass und Ziele“ fehlt noch Deine Veränderungsbereitschaft.'],
-    ['height', 'Im Abschnitt „Körperdaten und Gewichtsverlauf“ fehlt noch Deine Größe.'],
-    ['weight', 'Im Abschnitt „Körperdaten und Gewichtsverlauf“ fehlt noch Dein aktuelles Gewicht.'],
+    ['height', 'Im Abschnitt „Körperdaten und Gewichtsentwicklung“ fehlt noch Deine Größe.'],
+    ['weight', 'Im Abschnitt „Körperdaten und Gewichtsentwicklung“ fehlt noch Dein aktuelles Gewicht.'],
     ['mealCount', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlt noch die Angabe zur Anzahl Deiner Mahlzeiten.'],
-    ['snacks', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlt noch die Angabe zu Snacks zwischendurch.'],
-    ['eatOut', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlt noch die Angabe zum Essen außer Haus.'],
     ['dayPattern', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlt noch Dein typischer Essalltag.'],
-    ['drinks', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlen noch Deine Hauptgetränke.'],
-    ['likes', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlen noch Deine Vorlieben oder Abneigungen.'],
-    ['triggerFoods', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlen noch problematische oder beschwerdeauslösende Lebensmittel.'],
-    ['appetite', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlt noch die Angabe zu Appetit / Hungergefühl.'],
-    ['eatingSpeed', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlt noch die Angabe zur Essgeschwindigkeit.'],
+    ['drinks', 'Im Abschnitt „Essen und Trinken im Alltag“ fehlen noch Art und ungefähre Menge Deiner üblichen Getränke pro Tag.'],
     ['sleepHours', 'Im Abschnitt „Lebensstil“ fehlt noch Deine Schlafdauer.'],
     ['stressLevel', 'Im Abschnitt „Lebensstil“ fehlt noch Dein Stressniveau.'],
-    ['activity', 'Im Abschnitt „Lebensstil“ fehlt noch Deine Bewegung / Dein Sport.'],
-    ['smoking', 'Im Abschnitt „Lebensstil“ fehlt noch die Angabe zum Rauchen.'],
-    ['alcohol', 'Im Abschnitt „Lebensstil“ fehlt noch die Angabe zu Alkohol.'],
-    ['shiftwork', 'Im Abschnitt „Lebensstil“ fehlt noch die Angabe zu Schichtarbeit.'],
-    ['previousApproaches', 'Im Abschnitt „Relevante Werte und bisherige Maßnahmen“ fehlt noch, welche Ernährungsumstellungen / Diäten / Maßnahmen bisher durchgeführt wurden. Wenn bisher nichts durchgeführt wurde, trage bitte z. B. „keine“ ein.']
   ];
 
   const goalsFilled = collectCheckValues('goalChecks').length > 0;
@@ -973,6 +1121,7 @@ function validateFormBasics(){
 
   let requiredOk = goalsFilled && diseasesFilled && symptomsFilled && familyHistoryFilled;
   let requiredMessage = '';
+  const activitySelectionFilled = collectCheckValues('activityTypeChecks').length > 0;
   if (!goalsFilled) requiredMessage = 'Im Abschnitt „Beratungsanlass und Ziele“ fehlt noch mindestens ein Ziel. Bitte markiere dort mindestens eine passende Angabe.';
   else if (!diseasesFilled) requiredMessage = 'Im Abschnitt „Gesundheit und Beschwerden“ fehlt bei „Vorerkrankungen / Diagnosen“ noch mindestens eine passende Angabe.';
   else if (!symptomsFilled) requiredMessage = 'Im Abschnitt „Gesundheit und Beschwerden“ fehlt bei „Verdauungsbeschwerden / Symptome“ noch mindestens eine passende Angabe.';
@@ -986,6 +1135,11 @@ function validateFormBasics(){
         break;
       }
     }
+  }
+
+  if (requiredOk && !activitySelectionFilled){
+    requiredOk = false;
+    requiredMessage = 'Im Abschnitt „Lebensstil“ fehlt bei „Bewegungsarten / Sport“ noch mindestens eine passende Auswahl.';
   }
 
   if (!emailOk) showMessage('Bitte trage eine gültige E-Mail-Adresse ein, zum Beispiel name@beispiel.de.');
@@ -1020,14 +1174,18 @@ function isFieldFilled(el){
   return !!String(el.value || '').trim();
 }
 
+function hasSelectionOrText(groupId, fieldId){
+  return collectCheckValues(groupId).length > 0 || isFieldFilled(byId(fieldId));
+}
+
 function getRequiredElementsForSection(sectionId){
   const requiredMap = {
     'section-a': ['fullName','email'],
-    'section-b': ['goalChecks','success','motivationScale','changeScale'],
+    'section-b': ['goalChecks','motivationScale','changeScale'],
     'section-c': [],
     'section-d': ['height','weight'],
-    'section-e': ['mealCount','drinks'],
-    'section-f': ['sleepHours','stressLevel','activity'],
+    'section-e': ['mealCount','dayPattern','drinks'],
+    'section-f': ['sleepHours','stressLevel'],
     'section-g': []
   };
   const ids = requiredMap[sectionId] || [];
@@ -1059,12 +1217,12 @@ function getSectionProgress(sectionId){
 
   const requiredIdsMap = {
     'section-a': ['fullName','email','birthDate','gender','job','street','postalCode','city'],
-    'section-b': ['success','motivationScale','changeScale'],
+    'section-b': ['motivationScale','changeScale'],
     'section-c': ['diseaseChecks','symptomChecks','familyHistoryChecks'],
     'section-d': ['height','weight'],
-    'section-e': ['mealCount','snacks','eatOut','dayPattern','drinks','likes','triggerFoods','appetite','eatingSpeed'],
-    'section-f': ['sleepHours','stressLevel','activity','smoking','alcohol','shiftwork'],
-    'section-g': ['previousApproaches']
+    'section-e': ['mealCount','dayPattern','drinks'],
+    'section-f': ['sleepHours','stressLevel'],
+    'section-g': []
   };
 
   const requiredFilled = (() => {
@@ -1077,6 +1235,13 @@ function getSectionProgress(sectionId){
       return collectCheckValues('diseaseChecks').length > 0 &&
              collectCheckValues('symptomChecks').length > 0 &&
              collectCheckValues('familyHistoryChecks').length > 0;
+    }
+    if (sectionId === 'section-f'){
+      const baseFilled = (requiredIdsMap[sectionId] || []).every(id => isFieldFilled(byId(id)));
+      return baseFilled && collectCheckValues('activityTypeChecks').length > 0;
+    }
+    if (sectionId === 'section-g'){
+      return hasAnyInput;
     }
     const ids = requiredIdsMap[sectionId] || [];
     if (!ids.length) return hasAnyInput;
@@ -1099,16 +1264,28 @@ function getSectionProgress(sectionId){
         .filter(id => isFieldFilled(byId(id))).length;
       return diseaseOk && symptomOk && familyOk && optionalCount >= 2;
     }
-    if (sectionId === 'section-g'){
-      const baseRequired = isFieldFilled(byId('previousApproaches'));
-      const optionalCount = ['labs','barriers','extraNotes']
+    if (sectionId === 'section-f'){
+      const baseFilled = (requiredIdsMap[sectionId] || []).every(id => isFieldFilled(byId(id)));
+      const activitySelected = collectCheckValues('activityTypeChecks').length > 0;
+      const activityDetailed = isFieldFilled(byId('activityFrequency')) || isFieldFilled(byId('activityDuration')) || isFieldFilled(byId('activity'));
+      const optionalCount = ['sleepQuality','workActivityLevel','workSchedule','workPattern','stressEating']
         .filter(id => isFieldFilled(byId(id))).length;
-      return baseRequired && optionalCount >= 1;
+      return baseFilled && activitySelected && activityDetailed && optionalCount >= 1;
+    }
+    if (sectionId === 'section-g'){
+      const infoCount = [
+        isFieldFilled(byId('labs')),
+        collectCheckValues('previousApproachChecks').length > 0,
+        isFieldFilled(byId('previousApproaches')),
+        isFieldFilled(byId('barriers')),
+        isFieldFilled(byId('extraNotes'))
+      ].filter(Boolean).length;
+      return infoCount >= 2;
     }
     return total > 0 && filledCount === total;
   })();
 
-  const hasRequiredFields = (requiredIdsMap[sectionId] || []).length > 0;
+  const hasRequiredFields = (requiredIdsMap[sectionId] || []).length > 0 || ['section-c','section-f'].includes(sectionId);
 
   if (hasRequiredFields){
     if (!requiredFilled) return {status:'open',label:'Wichtige Informationen fehlen noch'};
@@ -1116,9 +1293,33 @@ function getSectionProgress(sectionId){
     return {status:'complete',label:'Vollständig ausgefüllt'};
   }
 
+  if (sectionId === 'section-g' && !hasAnyInput) return {status:'open',label:'Offen - Versand möglich'};
   if (!hasAnyInput) return {status:'open',label:'Wichtige Informationen fehlen noch'};
   if (!fullyFilled) return {status:'partial',label:'Teilweise ausgefüllt – Versand möglich'};
   return {status:'complete',label:'Vollständig ausgefüllt'};
+}
+
+function updateToolbarProgress(){
+  const sectionIds = ['section-a','section-b','section-c','section-d','section-e','section-f','section-g'];
+  const track = byId('toolbarProgressTrack');
+  const summary = byId('toolbarProgressSummary');
+  const container = byId('toolbarProgress');
+  if (!track || !summary || !container) return;
+
+  const states = sectionIds.map(sectionId => getSectionProgress(sectionId));
+  const counts = states.reduce((acc, state) => {
+    acc[state.status] = (acc[state.status] || 0) + 1;
+    return acc;
+  }, {open:0, partial:0, complete:0});
+
+  track.innerHTML = states.map((state, index) => `<span class="toolbar-progress-segment is-${state.status}" title="Bereich ${index + 1}: ${state.label}"></span>`).join('');
+
+  const summaryParts = [];
+  if (counts.complete) summaryParts.push(`${counts.complete} vollständig`);
+  if (counts.partial) summaryParts.push(`${counts.partial} teilweise`);
+  if (counts.open) summaryParts.push(`${counts.open} noch offen`);
+  summary.textContent = summaryParts.length ? summaryParts.join(' · ') : 'Noch keine Bereiche ausgefüllt';
+  container.setAttribute('aria-label', `Formularstatus: ${summary.textContent}`);
 }
 
 function updateSectionStatuses(){
@@ -1131,6 +1332,7 @@ function updateSectionStatuses(){
     const textEl = badge.querySelector('.section-status-text');
     if (textEl) textEl.textContent = state.label;
   });
+  updateToolbarProgress();
 }
 
 function collectData(){
@@ -1184,13 +1386,19 @@ function collectData(){
     sleepHours: byId('sleepHours').value,
     sleepQuality: byId('sleepQuality').value,
     stressLevel: byId('stressLevel').value,
+    activityTypes: collectCheckValues('activityTypeChecks'),
+    activityFrequency: byId('activityFrequency').value,
+    activityDuration: byId('activityDuration').value,
     activity: byId('activity').value.trim(),
+    workActivityLevel: byId('workActivityLevel').value,
+    workSchedule: byId('workSchedule').value,
     workPattern: byId('workPattern').value.trim(),
     smoking: byId('smoking').value,
     alcohol: byId('alcohol').value,
     shiftwork: byId('shiftwork').value,
     stressEating: byId('stressEating').value.trim(),
     labs: byId('labs').value.trim(),
+    previousApproachTypes: collectCheckValues('previousApproachChecks'),
     previousApproaches: byId('previousApproaches').value.trim(),
     barriers: byId('barriers').value.trim(),
     extraNotes: byId('extraNotes').value.trim()
@@ -1207,6 +1415,13 @@ function applyData(data){
   setCheckValues('diseaseChecks', data.diseases || []);
   setCheckValues('symptomChecks', data.symptoms || []);
   setCheckValues('familyHistoryChecks', data.familyHistory || []);
+  setCheckValues('activityTypeChecks', data.activityTypes || []);
+  setCheckValues('previousApproachChecks', data.previousApproachTypes || []);
+
+  const drinksField = byId('drinks');
+  if (drinksField && !drinksField.value.trim() && Array.isArray(data.drinkTypes) && data.drinkTypes.length){
+    drinksField.value = data.drinkTypes.join(', ');
+  }
   document.addEventListener('pointerdown', (event) => {
   const target = event.target;
   if (!target || typeof target.closest !== 'function') return;
@@ -1343,7 +1558,7 @@ function renderSummary(){
       </section>
 
       <section class="summary-section compact">
-        <h4>Körperdaten und Gewichtsverlauf</h4>
+        <h4>Körperdaten und Gewichtsentwicklung</h4>
         ${lineIf('Größe', d.height ? d.height + ' cm' : '')}
         ${lineIf('Aktuelles Gewicht', d.weight ? d.weight + ' kg' : '')}
         ${lineIf('Taillenumfang', d.waist ? d.waist + ' cm' : '')}
@@ -1351,7 +1566,7 @@ function renderSummary(){
         ${lineIf('Gewicht vor 3 Monaten', d.weight3m ? d.weight3m + ' kg' : '')}
         ${lineIf('Gewicht vor 6 Monaten', d.weight6m ? d.weight6m + ' kg' : '')}
         ${lineIf('Gewicht vor 12 Monaten', d.weight12m ? d.weight12m + ' kg' : '')}
-        ${lineIf('Hinweise zum Gewichtsverlauf', d.weightComment)}
+        ${lineIf('Hinweise zur Gewichtsentwicklung', d.weightComment)}
       </section>
 
       <section class="summary-section wide">
@@ -1392,7 +1607,7 @@ function renderSummary(){
           ${lineIf('Appetit', d.appetite)}
         </div>
         ${lineIf('Typischer Essalltag', d.dayPattern)}
-        ${lineIf('Hauptgetränke pro Tag', d.drinks)}
+        ${lineIf('Hauptgetränke und ungefähre Trinkmenge pro Tag', d.drinks)}
         ${lineIf('Vorlieben / Abneigungen', d.likes)}
         ${lineIf('Problematische Lebensmittel', d.triggerFoods)}
         ${lineIf('Essgeschwindigkeit', d.eatingSpeed)}
@@ -1412,15 +1627,25 @@ function renderSummary(){
           ${lineIf('Rauchen', d.smoking)}
           ${lineIf('Alkohol', d.alcohol)}
         </div>
-        ${lineIf('Bewegung / Sport', d.activity)}
-        ${lineIf('Arbeits- und Tagesstruktur', d.workPattern)}
+        ${listIf('Bewegungsarten / Sport', d.activityTypes)}
+        <div class="summary-row-compact">
+          ${lineIf('Häufigkeit', d.activityFrequency)}
+          ${lineIf('Dauer pro Einheit', d.activityDuration)}
+        </div>
+        ${lineIf('Ergänzungen zu Bewegung / Sport', d.activity)}
+        <div class="summary-row-compact">
+          ${lineIf('Arbeitsalltag / körperliche Belastung', d.workActivityLevel)}
+          ${lineIf('Arbeitszeiten / Tagesstruktur', d.workSchedule)}
+        </div>
+        ${lineIf('Ergänzungen zur Arbeits- und Tagesstruktur', d.workPattern)}
         ${lineIf('Einfluss von Stress / Emotionen auf das Essen', d.stressEating)}
       </section>
 
       <section class="summary-section wide">
-        <h4>Relevante Werte und bisherige Maßnahmen</h4>
-        ${lineIf('Relevante Blutwerte / Befunde', d.labs)}
-        ${lineIf('Bisherige Maßnahmen', d.previousApproaches)}
+        <h4>Bisherige Maßnahmen und wichtige Werte</h4>
+        ${lineIf('Wichtige Blutwerte / Befunde', d.labs)}
+        ${listIf('Bisherige Maßnahmen', d.previousApproachTypes)}
+        ${lineIf('Ergänzungen zu bisherigen Maßnahmen', d.previousApproaches)}
         ${lineIf('Größte Hürde', d.barriers)}
         ${lineIf('Sonstige Hinweise', d.extraNotes)}
       </section>
@@ -1464,6 +1689,8 @@ renderChecks('goalChecks', goalOptions);
 renderChecks('diseaseChecks', diseaseOptions);
 renderChecks('symptomChecks', symptomOptions);
 renderChecks('familyHistoryChecks', familyHistoryOptions);
+renderChecks('activityTypeChecks', activityTypeOptions);
+renderChecks('previousApproachChecks', previousApproachOptions);
 updateAllExclusiveGroups();
 fillScale('motivationScale');
 fillScale('changeScale');
