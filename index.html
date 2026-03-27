@@ -356,6 +356,7 @@
   .top-actions{align-items:center}
   .top-actions .spacer{flex:1 1 auto;min-width:8px}
   .toolbar-label{font-size:14px;font-weight:700;color:var(--brand-dark);padding:0 2px}
+  .summary-toolbar-group{display:inline-flex;align-items:center;gap:10px;min-width:0}
   .section-accordion{
     overflow:hidden;
     scroll-margin-top:96px;
@@ -392,7 +393,22 @@
       padding:12px 10px;
       overflow:visible;
     }
-    .toolbar-label{width:100%;padding-top:0;text-align:center}
+    .summary-toolbar-group{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex:0 1 auto;
+      margin:0 auto;
+      min-width:0;
+    }
+    .toolbar-label{
+      width:auto;
+      padding-top:0;
+      margin:0;
+      text-align:center;
+      white-space:nowrap;
+    }
     .top-actions{
       row-gap:8px;
       justify-content:center;
@@ -428,7 +444,7 @@
       margin-right:auto;
     }
     .summary-switch{
-      margin:0 auto;
+      margin:0;
     }
   }
 
@@ -716,8 +732,10 @@
             </div>
           </div>
           <span class="spacer" aria-hidden="true"></span>
-          <span class="toolbar-label">Zusammenfassung</span>
-          <span class="summary-switch"><button class="secondary" id="showSummaryBtnTop">Ein</button><button class="secondary" id="hideSummaryBtnTop">Aus</button></span>
+          <span class="summary-toolbar-group">
+            <span class="toolbar-label">Zusammenfassung</span>
+            <span class="summary-switch"><button class="secondary" id="showSummaryBtnTop">Ein</button><button class="secondary" id="hideSummaryBtnTop">Aus</button></span>
+          </span>
         </div>
         <div class="status" id="status"></div>
         <div class="required-legend"><span class="required-star">*</span> Pflichtfeld</div>
